@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+struct MaxMin {
+    int max;
+    int min;
+};
+
+struct MaxMin get_max_min(int arr[], int start, int end) {
+    struct MaxMin result, left, right;
+    int mid;
+    
+    if (start == end) {
+        result.max = arr[start];
+        result.min = arr[start];
+        return result;
+    }
+    
+    if (end == start + 1) {
+        if (arr[start] > arr[end]) {
+            result.max = arr[start];
+            result.min = arr[end];
+        } else {
+            result.max = arr[end];
+            result.min = arr[start];
+        }
+        return result;
+    }
+    
+    mid = (start + end) / 2;
+    left = get_max_min(arr, start, mid);
+    right = get_max_min(arr, mid + 1, end);
+    
+    if (left.max > right.max) {
+        result.max = left.max;
+    } else {
+        result.max = right.max;
+    }
+    
+    if (left.min < right.min) {
+        result.min = left.min;
+    } else {
+        result.min = right.min;
+    }
+    
+    return result;
+}
+
+int main() {
+    int arr[100];
+    int n,i;
+    struct MaxMin result;
+    
+    printf("Enter the number of elements in the array: ");
+    scanf("%d", &n);
+    
+    printf("Enter the elements of the array:\n");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    
+    result = get_max_min(arr, 0, n - 1);
+    
+    printf("Max value: %d\n", result.max);
+    printf("Min value: %d\n", result.min);
+    
+    return 0;
+}
